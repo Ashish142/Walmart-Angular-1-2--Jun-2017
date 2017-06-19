@@ -80,72 +80,38 @@
 		$(function(){
 			window.calculator = scope.calculator = new SalaryCalculator();
 
-			//React to user actions
-			/*$('#txtBasic').change(function(){
-				var self = this;
-				scope.$apply(function(){
-					calculator.basic = self.value.toInt();
-				});
-			});
-			scope.$watch('calculator.basic', function(newValue, oldValue){
-				$('#txtBasic').val(newValue);
-			});*/
-			bindTwoWay($('#txtBasic'), 'calculator.basic');
+			/*bindTwoWay($('#txtBasic'), 'calculator.basic');
 
-			/*$('#txtHra').change(function(){
-				var self = this;
-				scope.$apply(function(){
-					calculator.hra = self.value.toInt();
-				});
-			});
-			scope.$watch('calculator.hra', function(newValue, oldValue){
-				$('#txtHra').val(newValue);
-			});*/
 			bindTwoWay($('#txtHra'), 'calculator.hra')
 
-			/*$('#txtDa').change(function(){
-				var self = this;
-				scope.$apply(function(){
-					calculator.da = self.value.toInt();
-				});
-			});
-			scope.$watch('calculator.da', function(newValue, oldValue){
-				$('#txtDa').val(newValue);
-			});*/
 			bindTwoWay($('#txtDa'), 'calculator.da');
 			
-			/*$('#rangeTax').change(function(){
-				var self = this;
-				scope.$apply(function(){
-					calculator.tax = self.value.toInt();
-				});
-			});
-			scope.$watch('calculator.tax', function(newValue, oldValue){
-				$('#rangeTax').val(newValue);
-			});*/
-			bindTwoWay($('#rangeTax'), 'calculator.tax')
+			bindTwoWay($('#rangeTax'), 'calculator.tax')*/
 
+			$('*[app-model]').each(function(index, element){
+				var $element = $(element),
+					model = $element.attr('app-model');
+				bindTwoWay($element, model);
+			})
 
-			/*$('#btnCalculate').click(function(){
-				scope.$apply(function(){
-					calculator.calculate();
-				});
-			});*/
-			bindClick($('#btnCalculate'), 'calculator.calculate()')
+			//bindClick($('#btnCalculate'), 'calculator.calculate()')
+
+			$('*[app-click]').each(function(index, element){
+				var $element = $(element),
+					expr = $element.attr('app-click');
+				bindClick($element, expr);
+			})
 			
-			//React to model changes
-			
-			
+			/*bindOneWay($('#spanTax'), 'calculator.tax');
 
-			/*scope.$watch('calculator.tax', function(newValue, oldValue){
-				$('#spanTax').html(newValue);
-			});*/
-			bindOneWay($('#spanTax'), 'calculator.tax');
-
-			/*scope.$watch('calculator.salary', function(newValue, oldValue){
-				$('#divResult').html(newValue);
-			});*/
 			bindOneWay($('#divResult'), 'calculator.salary');
+			*/
+			$('*[app-bind]').each(function(index, element){
+				var $element = $(element),
+					model = $element.attr('app-bind');
+				bindOneWay($element, model);
+			});
+
 		});
 
 	</script>
@@ -156,26 +122,26 @@
 	<div class="content">
 		<div class="field">
 			<label for="">Basic :</label>
-			<input type="number" name="" id="txtBasic">
+			<input type="number" name="" id="txtBasic" app-model="calculator.basic">
 		</div>
 		<div class="field">
 			<label for="">HRA :</label>
-			<input type="number" name="" id="txtHra">
+			<input type="number" name="" id="txtHra" app-model="calculator.hra">
 		</div>
 		<div class="field">
 			<label for="">DA :</label>
-			<input type="number" name="" id="txtDa">
+			<input type="number" name="" id="txtDa" app-model="calculator.da">
 		</div>
 		<div class="field">
 			<label for="">Tax :</label>
-			<input type="range" name="" id="rangeTax" min="0" max="30" value="0">
-			<span id="spanTax">[Tax]</span>
+			<input type="range" name="" id="rangeTax" min="0" max="30" app-model="calculator.tax">
+			<span id="spanTax" app-bind="calculator.tax">[Tax]</span>
 		</div>
 		<div class="field">
-			<input type="button" value="Calculate" id="btnCalculate">
+			<input type="button" value="Calculate" id="btnCalculate" app-click="calculator.calculate()">
 		</div>
 		<div class="field">
-			<div id="divResult">[Salary]</div>
+			<div id="divResult" app-bind="calculator.salary">[Salary]</div>
 		</div>
 	</div>
 </body>
