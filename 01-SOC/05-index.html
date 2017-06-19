@@ -43,21 +43,23 @@
 				if (_data[attrName] === value) return;
 				_data[attrName] = value;
 				//trigger change notification for 'attrName'
-				var subscriptionFn = _subscriptions[attrName];
-				if (typeof subscriptionFn === 'function')
-					subscriptionFn();
+				var subscriptionFns = _subscriptions[attrName];
+				subscriptionFns.forEach(function(subscriptionFn){
+					if (typeof subscriptionFn === 'function')
+						subscriptionFn();	
+				});
 			};
 
 			var _subscriptions = {
-				basic : null,
-				hra : null,
-				da : null,
-				tax : null,
-				salary : null
+				basic : [],
+				hra : [],
+				da : [],
+				tax : [],
+				salary : []
 			};
 
 			this.watch = function(attrName, subscriptionFn){
-				_subscriptions[attrName] = subscriptionFn;
+				_subscriptions[attrName].push(subscriptionFn);
 			};
 		}
 		//Behavior
