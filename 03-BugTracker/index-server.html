@@ -135,39 +135,67 @@
 			};
 		})
 
-		bugTrackerApp.controller('bugsController', function($scope, bugOperations, $http){
+		bugTrackerApp.factory('bugService', function(bugOperations, $http){
+			function getAllBugs(){
+				return $http
+					.get('http://localhost:3000/bugs')
+					.then(function(response){
+						return response.data;
+					});
+			}
+			function addNewBug(bugName){
+				var newBug = bugOperations.createNew(0, bugName);
+				return $http
+					.post('http://localhost:3000/bugs', newBug)
+					.then(function(response){
+						return response.data;
+					});
+			}
+			
+			function toggleBug(bug){
+				var bugToToggle = angular.copy(bug);
+				bugOperations.toggle(bugToToggle);
+				return $http
+					.put('http://localhost:3000/bugs/' + bugToToggle.id, bugToToggle)
+					.then(function(response){
+						return response.data;
+					});
+			}
+			function removeBug(bug){
+				return $http
+					.delete('http://localhost:3000/bugs/' + bug.id)
+					.then(function(response){
+						return response.data;
+					});
+			}
+			return {
+				getAll : getAllBugs,
+				addNew : addNewBug,
+				toggle : toggleBug,
+				remove : removeBug
+			}
+		})
+		bugTrackerApp.controller('bugsController', function($scope, bugService){
 			
 			$scope.bugs = [];
 
-			$http
-				.get('http://localhost:3000/bugs')
-				.then(function(response){
-					return response.data;
-				})
+			bugService
+				.getAll()
 				.then(function(bugs){
 					$scope.bugs = bugs;
 				});
 			
 			$scope.addNew = function(bugName){
-				var newBug = bugOperations.createNew(0, bugName);
-				$http
-					.post('http://localhost:3000/bugs', newBug)
-					.then(function(response){
-						return response.data;
-					})
+				bugService
+					.addNew(bugName)
 					.then(function(newBug){
 						$scope.bugs.push(newBug);		
 					});
 			};
 
 			$scope.toggle = function(bug){
-				var bugToToggle = angular.copy(bug);
-				bugOperations.toggle(bugToToggle);
-				$http
-					.put('http://localhost:3000/bugs/' + bugToToggle.id, bugToToggle)
-					.then(function(response){
-						return response.data;
-					})
+				bugService
+					.toggle(bug)
 					.then(function(toggledBug){
 						$scope.bugs = $scope.bugs.map(function(bug){
 							return (bug.id === toggledBug.id) ? toggledBug : bug;
@@ -179,7 +207,7 @@
 			$scope.removeClosed = function(){
 				for(var index = $scope.bugs.length-1; index >=0; index--){
 					if ($scope.bugs[index].isClosed){
-						$http.delete('http://localhost:3000/bugs/' + $scope.bugs[index].id);
+						bugService.remove($scope.bugs[index]);
 						$scope.bugs.splice(index, 1);
 					}
 				}
