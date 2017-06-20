@@ -10,7 +10,7 @@
 		(done) 4. Remove closed bugs
 		(done) 5. Statistics ( # of closed bugs / total # of bugs)
 		(done) 6. Search the bugs
-		7. Sort the bugs
+		(done) 7. Sort the bugs
 		8. Improvise bug display
 		9. Persist the bugs in the localStorage
 		10. Display 'createdAt'
@@ -123,9 +123,12 @@
 		</section>
 		<section class="sort">
 			<label for="">Order By :</label>
-			<input type="text" name="" id="">
+			<select ng-model="sortBugBy">
+				<option value="name">Name</option>
+				<option value="isClosed">Status</option>
+			</select>
 			<label for="">Descending ? :</label>
-			<input type="checkbox" name="" id="">
+			<input type="checkbox" ng-model="sortBugDescending">
 		</section>
 		<section class="edit">
 			<label for="">New Bug :</label>
@@ -134,7 +137,7 @@
 		</section>
 		<section class="list">
 			<ol>
-				<li ng-repeat="bug in ( bugs | filter:searchBug ) ">
+				<li ng-repeat="bug in ( bugs | filter:searchBug | orderBy:sortBugBy:sortBugDescending) ">
 					<span class="bugname" ng-click="toggle(bug)" ng-class="{closed : bug.isClosed}">{{bug.name}}</span>
 					<div class="datetime">[CreatedAt]</div>
 				</li>
