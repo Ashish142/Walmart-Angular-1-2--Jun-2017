@@ -76,7 +76,7 @@
 
 		bugTrackerApp.value('defaultBugName', '[Default Bug Name]');
 
-		bugTrackerApp.factory('bugOperations' , function(defaultBugName){
+		/*bugTrackerApp.factory('bugOperations' , function(defaultBugName){
 			return {
 				createNew : function(id, bugName){
 					return {
@@ -90,6 +90,40 @@
 					bug.isClosed = !bug.isClosed;
 				}
 			}
+		});*/
+
+		/*bugTrackerApp.factory('bugOperations' , function(defaultBugName){
+			function createNewBug(id, bugName){
+				return {
+					id : id,
+					name : bugName || defaultBugName,
+					isClosed : false,
+					createdAt : new Date()
+				};
+			}
+			function toggleBug(bug){
+				bug.isClosed = !bug.isClosed;
+			}
+			return {
+				createNew : createNewBug,
+				toggle : toggleBug
+			};
+		});*/
+
+		bugTrackerApp.service('bugOperations' , function(defaultBugName){
+			this.createNew = function createNewBug(id, bugName){
+				return {
+					id : id,
+					name : bugName || defaultBugName,
+					isClosed : false,
+					createdAt : new Date()
+				};
+			};
+
+			this.toggle = function toggleBug(bug){
+				bug.isClosed = !bug.isClosed;
+			};
+			
 		});
 
 		bugTrackerApp.factory('bugStorage', function(bugOperations){
@@ -183,6 +217,9 @@
 				.getAll()
 				.then(function(bugs){
 					$scope.bugs = bugs;
+				})
+				.catch(function(){
+					$scope.setMessage('Unable to communicate to the server');
 				});
 			
 			$scope.addNew = function(bugName){
@@ -221,6 +258,16 @@
 				return bugs.reduce(function(result, bug){
 					return bug.isClosed ? ++result : result;
 				}, 0);
+			}
+		});
+
+		bugTrackerApp.run(function($rootScope, $timeout){
+			$rootScope.message = '';
+			$rootScope.setMessage = function(msg){
+				$rootScope.message = msg;
+				$timeout(function(){
+					$rootScope.message = '';
+				},10000)
 			}
 		});
 
@@ -270,6 +317,7 @@
 			</ol>
 			<input type="button" value="Remove Closed" ng-click="removeClosed()">
 		</section>
+		<div>{{message}}</div>
 	</div>
 </body>
 </html>

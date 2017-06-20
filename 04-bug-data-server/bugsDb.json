@@ -15,8 +15,14 @@
     {
       "id": 5,
       "name": "Application not responsive",
-      "isClosed": false,
+      "isClosed": true,
       "createdAt": "2017-06-20T06:57:18.957Z"
+    },
+    {
+      "id": 6,
+      "name": "Service response time is poor",
+      "isClosed": false,
+      "createdAt": "2017-06-20T08:20:14.910Z"
     }
   ],
   "employees": [
