@@ -11,8 +11,24 @@
 		(done) 5. Statistics ( # of closed bugs / total # of bugs)
 		(done) 6. Search the bugs
 		(done) 7. Sort the bugs
-		8. Improvise bug display
-		9. Persist the bugs in the localStorage
+		(done) 8. Improvise bug display
+		(done) 9. Persist the bugs in the localStorage
+				window.localStorage
+				===================
+				* key/value store
+				* both key and value must be strings (angular.toJson() and angular.fromJson() for searialization and deserialization)
+				* key has to be unique
+				* SOP
+				* 10MB per origin
+				* APIs
+				------
+					- setItem(key, value)
+					- getItem(key)
+					- removeItem(key)
+					- key(index) 
+					- clear()
+					- length
+
 		10. Display 'createdAt'
 		11. Persist the bugs in the server
 	</script>
@@ -59,8 +75,9 @@
 
 		bugTrackerApp.factory('bugOperations' , function(defaultBugName){
 			return {
-				createNew : function(bugName){
+				createNew : function(id, bugName){
 					return {
+						id : id,
 						name : bugName || defaultBugName,
 						isClosed : false
 					};
@@ -72,26 +89,35 @@
 		});
 
 		bugTrackerApp.controller('bugsController', function($scope, bugOperations){
-			$scope.bugs = [
-				bugOperations.createNew('Server communication failure'),
-				bugOperations.createNew('Data is incorrect'),
-				bugOperations.createNew('User actions not recognized'),
-				bugOperations.createNew('Application is not responding')
-			];
+			var currentBugId = 0;
+			var storage = window.localStorage;
+
+			$scope.bugs = [];
+
+			for(var index = 0; index < storage.length; index++){
+				var data = storage.getItem(storage.key(index));
+				var bug = angular.fromJson(data);
+				currentBugId = currentBugId > bug.id ? currentBugId : bug.id;
+				$scope.bugs.push(bug);
+			}
 
 			$scope.addNew = function(bugName){
-				var newBug = bugOperations.createNew(bugName);
+				var newBug = bugOperations.createNew(++currentBugId, bugName);
+				storage.setItem(newBug.id, angular.toJson(newBug));
 				$scope.bugs.push(newBug);
 			};
 
 			$scope.toggle = function(bug){
 				bugOperations.toggle(bug);
+				storage.setItem(bug.id, angular.toJson(bug));
 			};
 
 			$scope.removeClosed = function(){
 				for(var index = $scope.bugs.length-1; index >=0; index--){
-					if ($scope.bugs[index].isClosed)
+					if ($scope.bugs[index].isClosed){
+						storage.removeItem(bug.id);
 						$scope.bugs.splice(index, 1);
+					}
 				}
 			};
 
@@ -151,7 +177,7 @@
 				}, 0);
 			}
 		});
-		
+
 	</script>
 </head>
 <body ng-app="bugTrackerApp">
