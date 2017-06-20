@@ -55,22 +55,26 @@
 	<script>
 		var bugTrackerApp = angular.module('bugTrackerApp', []);
 
-		var defaultBugName = '[Default Bug Name]';
+		bugTrackerApp.value('defaultBugName', '[Default Bug Name]');
 
-		bugTrackerApp.value('bugOperations' , {
-			createNew : function(bugName){
-				return {
-					name : bugName || defaultBugName,
-					isClosed : false
-				};
-			},
-			toggle : function(bug){
-				bug.isClosed = !bug.isClosed;
+		bugTrackerApp.factory('bugOperations' , function(defaultBugName){
+			return {
+				createNew : function(bugName){
+					return {
+						name : bugName || defaultBugName,
+						isClosed : false
+					};
+				},
+				toggle : function(bug){
+					bug.isClosed = !bug.isClosed;
+				}
 			}
 		});
 
 		bugTrackerApp.controller('bugsController', function($scope, bugOperations){
-			$scope.bugs = [];
+			$scope.bugs = [
+				bugOperations.createNew('')
+			];
 
 			$scope.addNew = function(bugName){
 				var newBug = bugOperations.createNew(bugName);
