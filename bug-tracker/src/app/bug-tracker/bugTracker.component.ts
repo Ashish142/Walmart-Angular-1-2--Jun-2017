@@ -16,11 +16,14 @@ export class BugTrackerComponent{
 			isClosed : false
 		};
 
-		this.bugs.push(newBug);
+		this.bugs = [...this.bugs, newBug];
 	}
 
-	toggle(bug : IBug){
-		bug.isClosed = !bug.isClosed
+	toggle(bugToToggle : IBug){
+		this.bugs = this.bugs.map(bug => bug === bugToToggle ? {
+			name : bug.name,
+			isClosed : !bug.isClosed
+		} : bug);
 	}
 
 	removeClosedClick(){
