@@ -20,7 +20,7 @@ export class BugTrackerComponent implements OnInit{
 	}
 
 	
-	addNewClick(bugName:string){
+	onNewBug(bugName:string){
 		let newBug : IBug = this._bugStorage.addNew(bugName);
 		this.bugs = [...this.bugs, newBug];
 	}
