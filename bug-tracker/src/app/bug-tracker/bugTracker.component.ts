@@ -1,29 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IBug } from './models/IBug';
+import { BugStorage } from './services/BugStorage.service';
 
 @Component({
 	selector : 'bug-tracker',
 	templateUrl : 'bugTracker.template.html',
 	styleUrls : ['bugTracker.css']
 })
-export class BugTrackerComponent{
+export class BugTrackerComponent implements OnInit{
 	//state
 	bugs : Array<IBug> = [];
+
+	constructor(private _bugStorage : BugStorage){
+
+	}
+	
+	ngOnInit(){
+		this.bugs = this._bugStorage.getAll();
+	}
+
 	
 	addNewClick(bugName:string){
-		let newBug : IBug = {
-			name : bugName,
-			isClosed : false
-		};
-
+		let newBug : IBug = this._bugStorage.addNew(bugName);
 		this.bugs = [...this.bugs, newBug];
 	}
 
 	toggle(bugToToggle : IBug){
-		this.bugs = this.bugs.map(bug => bug === bugToToggle ? {
-			name : bug.name,
-			isClosed : !bug.isClosed
-		} : bug);
+		let toggledBug = this._bugStorage.toggle(bugToToggle);
+		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
 	}
 
 	removeClosedClick(){

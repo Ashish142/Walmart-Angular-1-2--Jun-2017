@@ -2,28 +2,34 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { UtilsModule } from './utils/utils.module';
+
 import { AppComponent } from './app.component';
 import { BugTrackerComponent } from './bug-tracker/bugTracker.component';
 import { BugStatsComponent } from './bug-tracker/bug-stats/bugStats.component';
 
-import { TrimTextPipe } from './bug-tracker/pipes/trimText.Pipe';
+
 import { ClosedCountPipe } from './bug-tracker/pipes/closedCount.pipe';
-import { SortPipe } from './bug-tracker/pipes/sort.pipe';
+
+import { BugOperations } from './bug-tracker/services/BugOperations.service';
+import { BugStorage } from './bug-tracker/services/BugStorage.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     BugTrackerComponent,
-    TrimTextPipe,
     ClosedCountPipe,
     BugStatsComponent,
-    SortPipe
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    UtilsModule
   ],
-  providers: [],
+  providers: [
+    BugOperations,
+    BugStorage
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

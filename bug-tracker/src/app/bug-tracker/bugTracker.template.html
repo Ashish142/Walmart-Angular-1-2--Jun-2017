@@ -20,7 +20,7 @@
 					<span class="bugname" (click)="toggle(bug)" [ngClass]="{closed : bug.isClosed}">
 						{{bug.name | trimText }}
 					</span>
-					<div class="datetime"></div>
+					<div class="datetime">{{bug.createdAt | elapsed}}</div>
 				</li>
 				
 			</ol>
