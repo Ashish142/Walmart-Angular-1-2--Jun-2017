@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IBug } from './models/IBug';
 
 @Component({
 	selector : 'bug-tracker',
@@ -7,14 +8,22 @@ import { Component } from '@angular/core';
 })
 export class BugTrackerComponent{
 	//state
-	bugs : Array<any> = [];
+	bugs : Array<IBug> = [];
 	
 	addNewClick(bugName:string){
-		let newBug = {
+		let newBug : IBug = {
 			name : bugName,
 			isClosed : false
 		};
 
 		this.bugs.push(newBug);
+	}
+
+	toggle(bug : IBug){
+		bug.isClosed = !bug.isClosed
+	}
+
+	removeClosedClick(){
+		this.bugs = this.bugs.filter(bug => !bug.isClosed);
 	}
 }

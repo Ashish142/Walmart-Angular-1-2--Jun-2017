@@ -21,13 +21,13 @@
 		<section class="list">
 			<ol>
 				<li *ngFor="let bug of bugs">
-					<span class="bugname">
-						{{bug.name}}
+					<span class="bugname" (click)="toggle(bug)" [ngClass]="{closed : bug.isClosed}">
+						{{bug.name | trimText }}
 					</span>
 					<div class="datetime"></div>
 				</li>
 				
 			</ol>
-			<input type="button" value="Remove Closed">
+			<input type="button" value="Remove Closed" (click)="removeClosedClick()">
 		</section>
 	</div>
