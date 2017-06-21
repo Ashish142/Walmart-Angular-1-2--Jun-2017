@@ -9,7 +9,7 @@
     {
       "id": 4,
       "name": "User actions not recognized",
-      "isClosed": false,
+      "isClosed": true,
       "createdAt": "2017-06-20T06:41:32.282Z"
     },
     {
@@ -23,6 +23,12 @@
       "name": "Service response time is poor",
       "isClosed": false,
       "createdAt": "2017-06-20T08:20:14.910Z"
+    },
+    {
+      "id": 7,
+      "name": "Http services is very slow",
+      "isClosed": false,
+      "createdAt": "2017-06-21T10:29:05.685Z"
     }
   ],
   "employees": [

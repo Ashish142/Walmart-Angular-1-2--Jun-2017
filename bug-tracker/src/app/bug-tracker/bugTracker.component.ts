@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IBug } from './models/IBug';
-import { BugStorage } from './services/BugStorage.service';
+import { BugService } from './services/BugService.service';
+
+import { Http } from '@angular/http';
+import 'rxjs/Rx';
 
 @Component({
 	selector : 'bug-tracker',
@@ -11,23 +14,29 @@ export class BugTrackerComponent implements OnInit{
 	//state
 	bugs : Array<IBug> = [];
 
-	constructor(private _bugStorage : BugStorage){
+	constructor(private _bugService : BugService ){
 
 	}
 	
 	ngOnInit(){
-		this.bugs = this._bugStorage.getAll();
+		
+		this._bugService
+			.getAll()
+			.subscribe(data => this.bugs = data);
 	}
 
 	
 	onNewBug(bugName:string){
-		let newBug : IBug = this._bugStorage.addNew(bugName);
-		this.bugs = [...this.bugs, newBug];
+		this._bugService
+			.addNew(bugName)
+			.subscribe(newBugData => this.bugs = [...this.bugs, newBugData]);
 	}
 
 	toggle(bugToToggle : IBug){
-		let toggledBug = this._bugStorage.toggle(bugToToggle);
-		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
+		this._bugService
+			.toggle(bugToToggle)
+			.subscribe(toggledBug => this.bugs = this.bugs.map(bug => bug.id === bugToToggle.id ? toggledBug : bug));
+		
 	}
 
 	removeClosedClick(){
