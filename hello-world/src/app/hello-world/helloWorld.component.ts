@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { add } from './Calculator';
 
 @Component({
 	selector : 'hello-world',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
 		<label>Name : </label>
 		<input type="text" [(ngModel)]="username"/>
 		<input type="button" value="Greet" (click)="onGreetClick()"/>
-		<h1>{{message}}</h1>
+		<hello-world-display [data]="message"></hello-world-display>
 	`
 })
 export class HelloWorldComponent{

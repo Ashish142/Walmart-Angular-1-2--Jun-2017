@@ -4,13 +4,15 @@ import { FormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HelloWorldComponent } from './hello-world/helloWorld.component';
+import { HelloWorldDisplayComponent} from './hello-world/helloWorldDisplay.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HelloWorldComponent
+    HelloWorldComponent,
+    HelloWorldDisplayComponent
   ],
   imports: [
     BrowserModule,

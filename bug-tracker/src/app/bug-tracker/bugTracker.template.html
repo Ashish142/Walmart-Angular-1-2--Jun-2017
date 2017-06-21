@@ -1,0 +1,33 @@
+<div class="content">
+		<section class="stats">
+			<span class="closed">5</span>
+			<span> / </span>
+			<span>{{bugs.length}}</span>
+		</section>
+		<section class="sort">
+			<label for="">Order By :</label>
+			<select>
+				<option value="name">Name</option>
+				<option value="isClosed">Status</option>
+			</select>
+			<label for="">Descending ? :</label>
+			<input type="checkbox">
+		</section>
+		<section class="edit">
+			<label for="">New Bug :</label>
+			<input type="text" ng-model="newBugName" #txtBugName>
+			<input type="button" value="Add New" (click) = "addNewClick(txtBugName.value)">
+		</section>
+		<section class="list">
+			<ol>
+				<li *ngFor="let bug of bugs">
+					<span class="bugname">
+						{{bug.name}}
+					</span>
+					<div class="datetime"></div>
+				</li>
+				
+			</ol>
+			<input type="button" value="Remove Closed">
+		</section>
+	</div>
