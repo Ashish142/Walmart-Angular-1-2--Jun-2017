@@ -13,7 +13,10 @@ import 'rxjs/Rx';
 export class BugTrackerComponent implements OnInit{
 	//state
 	bugs : Array<IBug> = [];
+	sortBugBy : string = '';
 
+	sortBugDescending : boolean = false;
+	
 	constructor(private _bugService : BugService ){
 
 	}
